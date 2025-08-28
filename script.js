@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const editTaskCategory = document.getElementById('editTaskCategory');
   const saveTaskBtn = document.getElementById('saveTaskBtn');
   const addCategoryBtn = document.getElementById('addCategoryBtn');
+  const categoryTags = document.getElementById('categoryTags');
 
-  
 
   // State variables
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -140,6 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
       <span class="task-text ${task.completed ? 'completed' : ''}">${task.text}</span>
       ${task.priority ? `<span class="task-priority priority-${task.priority}">${task.priority}</span>` : ''}
+      ${task.categories && task.categories.length > 0 ? `
+                    <span class="task-category">${task.categories[0]}</span>
+                ` : ''}
       <div class="task-actions">
         <button class="btn-icon edit-btn" data-id="${task.id}">
           <i class="fas fa-edit"></i>
@@ -190,7 +193,9 @@ document.addEventListener("DOMContentLoaded", () => {
     editTaskText.value = task.text;
     editTaskPriority.value = task.priority;
     editTaskDueDate.value = task.dueDate || '';
-        
+
+    renderCategoryTags()
+
     taskDetailsModal.style.display = 'flex';
   }
   function closeModal() {
@@ -228,7 +233,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     editTaskCategory.value = '';
+    renderCategoryTags()
   }
+  function renderCategoryTags() {
+    categoryTags.innerHTML = '';
+    currentCategories.forEach(category => {
+        const tag = document.createElement('span');
+        tag.className = 'category-tag';
+        tag.innerHTML = `
+            ${category}
+            <button onclick="removeCategory('${category}')">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        categoryTags.appendChild(tag);
+    });
+}
+
 
 
 
