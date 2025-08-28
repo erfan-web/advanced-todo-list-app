@@ -134,8 +134,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Add event listeners to the new elements
       const checkbox = taskItem.querySelector('.task-checkbox');
+      const deleteBtn = taskItem.querySelector('.delete-btn');
+
 
       checkbox.addEventListener('change', () => toggleTaskComplete(task.id));
+      deleteBtn.addEventListener('click', () => deleteTask(task.id));
 
 
     });
@@ -149,6 +152,15 @@ document.addEventListener("DOMContentLoaded", () => {
           updateStats();
       }
   }
+  function deleteTask(id) {
+    if (confirm('Are you sure you want to delete this task?')) {
+        tasks = tasks.filter(task => task.id !== id);
+        saveTask();
+        renderTasks();
+        updateStats();
+    }
+  }
+
   function formatDate(dateString) {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString("en-US", options);
