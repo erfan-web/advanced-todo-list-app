@@ -131,8 +131,23 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       taskList.appendChild(taskItem);
+
+      // Add event listeners to the new elements
+      const checkbox = taskItem.querySelector('.task-checkbox');
+
+      checkbox.addEventListener('change', () => toggleTaskComplete(task.id));
+
+
     });
 
+  }
+  function toggleTaskComplete(id) {
+      const task = tasks.find(task => task.id === id);
+      if (task) {
+          task.completed = !task.completed;
+          saveTask();
+          updateStats();
+      }
   }
   function formatDate(dateString) {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
