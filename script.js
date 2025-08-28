@@ -113,6 +113,14 @@ document.addEventListener("DOMContentLoaded", () => {
       <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
       <span class="task-text ${task.completed ? 'completed' : ''}">${task.text}</span>
       ${task.priority ? `<span class="task-priority priority-${task.priority}">${task.priority}</span>` : ''}
+      <div class="task-actions">
+        <button class="btn-icon edit-btn" data-id="${task.id}">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn-icon delete-btn" data-id="${task.id}">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
       `;
 
       taskList.appendChild(taskItem);
