@@ -136,10 +136,21 @@ document.addEventListener("DOMContentLoaded", () => {
       taskItem.setAttribute('data-id', task.id);
       taskItem.setAttribute('draggable', 'true');
 
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const dueDate = task.dueDate ? new Date(task.dueDate) : null;
+      const isOverdue = dueDate && dueDate < today && !task.completed;
+
       taskItem.innerHTML = `
       <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
       <span class="task-text ${task.completed ? 'completed' : ''}">${task.text}</span>
       ${task.priority ? `<span class="task-priority priority-${task.priority}">${task.priority}</span>` : ''}
+      ${task.dueDate ? `
+      <span class="task-due-date ${isOverdue ? 'overdue' : ''}">
+        <i class="far fa-calendar-alt"></i>
+        ${formatDate(task.dueDate)}
+      </span>
+      ` : ''}
       ${task.categories && task.categories.length > 0 ? `
                     <span class="task-category">${task.categories[0]}</span>
                 ` : ''}
