@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // State variables
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   let categories = JSON.parse(localStorage.getItem('categories')) || ['Work', 'Personal', 'Shopping'];
+  let currentEditId = null;
+  let currentCategories = [];
 
   // Initialize the app
   init();
@@ -138,11 +140,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add event listeners to the new elements
       const checkbox = taskItem.querySelector('.task-checkbox');
       const deleteBtn = taskItem.querySelector('.delete-btn');
-
+      const editBtn = taskItem.querySelector('.edit-btn');
 
       checkbox.addEventListener('change', () => toggleTaskComplete(task.id));
       deleteBtn.addEventListener('click', () => deleteTask(task.id));
-
+      editBtn.addEventListener('click', () => openEditModal(task.id));
 
     });
 
@@ -163,6 +165,21 @@ document.addEventListener("DOMContentLoaded", () => {
         updateStats();
     }
   }
+  function openEditModal(id) {
+    const task = tasks.find(task => task.id === id);
+    if (!task) return;
+    
+    currentEditId = id;
+    currentCategories = [...task.categories];
+    
+    editTaskText.value = task.text;
+    editTaskPriority.value = task.priority;
+    editTaskDueDate.value = task.dueDate || '';
+        
+    taskDetailsModal.style.display = 'flex';
+  }
+
+
   function updateCategoryFilter() {
     categoryFilter.innerHTML = `
         <option value="all">All Categories</option>
