@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   filterSelect.addEventListener('change', renderTasks);
   priorityFilter.addEventListener('change', renderTasks);
   categoryFilter.addEventListener('change', renderTasks);
+  searchBtn.addEventListener('click', renderTasks);
 
   themeToggle.addEventListener("click", toggleTheme);
 
