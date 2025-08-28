@@ -78,14 +78,14 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTasks()
     updateStats();
   }
-  function saveTasks(){
+  function saveTasks() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
   function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute("data-theme");
     const newTheme = currentTheme == "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme" , newTheme)
+    localStorage.setItem("theme", newTheme)
     updateThemeIcon(newTheme);
   }
   function updateThemeIcon(theme) {
@@ -100,22 +100,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchValue = searchInput.value.toLowerCase();
 
     const filteredTasks = tasks.filter(task => {
-        // Filter by status
-        if (filterValue === 'completed' && !task.completed) return false;
-        if (filterValue === 'pending' && task.completed) return false;
-        
-        // Filter by priority
-        if (priorityValue !== 'all' && task.priority !== priorityValue) return false;
-        
-        // Filter by category
-        if (categoryValue !== 'all') {
-            if (!task.categories || !task.categories.includes(categoryValue)) return false;
-        }
-        
-        // Filter by search
-        if (searchValue && !task.text.toLowerCase().includes(searchValue)) return false;
-        
-        return true;
+      // Filter by status
+      if (filterValue === 'completed' && !task.completed) return false;
+      if (filterValue === 'pending' && task.completed) return false;
+
+      // Filter by priority
+      if (priorityValue !== 'all' && task.priority !== priorityValue) return false;
+
+      // Filter by category
+      if (categoryValue !== 'all') {
+        if (!task.categories || !task.categories.includes(categoryValue)) return false;
+      }
+
+      // Filter by search
+      if (searchValue && !task.text.toLowerCase().includes(searchValue)) return false;
+
+      return true;
     });
 
     if (filteredTasks.length === 0) {
@@ -179,28 +179,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
   function toggleTaskComplete(id) {
-      const task = tasks.find(task => task.id === id);
-      if (task) {
-          task.completed = !task.completed;
-          saveTasks();
-          updateStats();
-      }
+    const task = tasks.find(task => task.id === id);
+    if (task) {
+      task.completed = !task.completed;
+      saveTasks();
+      updateStats();
+    }
   }
   function deleteTask(id) {
     if (confirm('Are you sure you want to delete this task?')) {
-        tasks = tasks.filter(task => task.id !== id);
-        saveTasks();
-        renderTasks();
-        updateStats();
+      tasks = tasks.filter(task => task.id !== id);
+      saveTasks();
+      renderTasks();
+      updateStats();
     }
   }
   function openEditModal(id) {
     const task = tasks.find(task => task.id === id);
     if (!task) return;
-    
+
     currentEditId = id;
     currentCategories = [...task.categories];
-    
+
     editTaskText.value = task.text;
     editTaskPriority.value = task.priority;
     editTaskDueDate.value = task.dueDate || '';
@@ -210,21 +210,21 @@ document.addEventListener("DOMContentLoaded", () => {
     taskDetailsModal.style.display = 'flex';
   }
   function closeModal() {
-      taskDetailsModal.style.display = 'none';
-      currentEditId = null;
-      currentCategories = [];
+    taskDetailsModal.style.display = 'none';
+    currentEditId = null;
+    currentCategories = [];
   }
   function saveTaskChanges() {
     if (!currentEditId) return;
-    
+
     const task = tasks.find(task => task.id === currentEditId);
     if (!task) return;
-    
+
     task.text = editTaskText.value.trim();
     task.priority = editTaskPriority.value;
     task.dueDate = editTaskDueDate.value || '';
     task.categories = [...currentCategories];
-    
+
     saveTasks();
     renderTasks();
     updateCategoryFilter();
@@ -233,33 +233,45 @@ document.addEventListener("DOMContentLoaded", () => {
   function addCategory() {
     const category = editTaskCategory.value.trim();
     if (!category || currentCategories.includes(category)) return;
-    
+
     currentCategories.push(category);
-    
+
     // Add to global categories if not exists
     if (!categories.includes(category)) {
-        categories.push(category);
-        localStorage.setItem('categories', JSON.stringify(categories));
-        updateCategoryFilter();
+      categories.push(category);
+      localStorage.setItem('categories', JSON.stringify(categories));
+      updateCategoryFilter();
     }
-    
+
     editTaskCategory.value = '';
     renderCategoryTags()
   }
   function renderCategoryTags() {
     categoryTags.innerHTML = '';
     currentCategories.forEach(category => {
-        const tag = document.createElement('span');
-        tag.className = 'category-tag';
-        tag.innerHTML = `
-            ${category}
-            <button onclick="removeCategory('${category}')">
-                <i class="fas fa-times"></i>
-            </button>
-        `;
-        categoryTags.appendChild(tag);
+      const tag = document.createElement('span');
+      tag.className = 'category-tag';
+
+      tag.innerHTML = `
+      ${category}
+      <button class="remove-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    `;
+
+      const removeBtn = tag.querySelector('.remove-btn');
+      removeBtn.addEventListener('click', () => {
+        removeCategory(category);
+      });
+      categoryTags.appendChild(tag);
     });
-}
+  }
+  function removeCategory(category) {
+    currentCategories = currentCategories.filter(cat => cat !== category);
+    categories.pop(category)
+    localStorage.setItem("categories",categories)
+    renderCategoryTags();
+  }
 
 
 
@@ -277,9 +289,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return new Date(dateString).toLocaleDateString("en-US", options);
   }
   function updateStats() {
-  totalTasksEl.textContent = tasks.length;
-  completedTasksEl.textContent = tasks.filter(task => task.completed).length;
-  pendingTasksEl.textContent = tasks.filter(task => !task.completed).length;
+    totalTasksEl.textContent = tasks.length;
+    completedTasksEl.textContent = tasks.filter(task => task.completed).length;
+    pendingTasksEl.textContent = tasks.filter(task => !task.completed).length;
   }
 
 });
