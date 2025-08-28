@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryFilter = document.getElementById("categoryFilter");
   const searchInput = document.getElementById("searchInput");
   const searchBtn = document.getElementById("searchBtn");
+  const totalTasksEl = document.getElementById('totalTasks');
+  const completedTasksEl = document.getElementById('completedTasks');
+  const pendingTasksEl = document.getElementById('pendingTasks');
+
 
   // State variables
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -32,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.documentElement.setAttribute("data-theme", savedTheme);
     updateThemeIcon(savedTheme);
     renderTasks()
+    updateStats()
   }
 
   function addTask() {
@@ -52,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     taskInput.value = "";
     saveTask()
     renderTasks()
+    updateStats();
   }
   function saveTask(){
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -132,4 +138,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString("en-US", options);
   }
+  function updateStats() {
+  totalTasksEl.textContent = tasks.length;
+  completedTasksEl.textContent = tasks.filter(task => task.completed).length;
+  pendingTasksEl.textContent = tasks.filter(task => !task.completed).length;
+  }
+
 });
