@@ -18,6 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event Listeners
   addTaskBtn.addEventListener("click", addTask);
+
+  filterSelect.addEventListener('change', renderTasks);
+  priorityFilter.addEventListener('change', renderTasks);
+  categoryFilter.addEventListener('change', renderTasks);
+
   themeToggle.addEventListener("click", toggleTheme);
 
   function init() {
