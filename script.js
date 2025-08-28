@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const editTaskDueDate = document.getElementById('editTaskDueDate');
   const editTaskCategory = document.getElementById('editTaskCategory');
   const saveTaskBtn = document.getElementById('saveTaskBtn');
+  const addCategoryBtn = document.getElementById('addCategoryBtn');
+
   
 
   // State variables
@@ -43,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
   closeModalBtn.addEventListener('click', closeModal);
   saveTaskBtn.addEventListener('click', saveTaskChanges);
   cancelEditBtn.addEventListener('click', closeModal);
+  addCategoryBtn.addEventListener('click', addCategory);
+
 
   function init() {
     // Check for saved theme preference
@@ -210,6 +214,22 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCategoryFilter();
     closeModal();
   }
+  function addCategory() {
+    const category = editTaskCategory.value.trim();
+    if (!category || currentCategories.includes(category)) return;
+    
+    currentCategories.push(category);
+    
+    // Add to global categories if not exists
+    if (!categories.includes(category)) {
+        categories.push(category);
+        localStorage.setItem('categories', JSON.stringify(categories));
+        updateCategoryFilter();
+    }
+    
+    editTaskCategory.value = '';
+  }
+
 
 
   function updateCategoryFilter() {
