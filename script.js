@@ -62,6 +62,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderTasks() {
+    const filterValue = filterSelect.value;
+    const priorityValue = priorityFilter.value;
+    const categoryValue = categoryFilter.value;
+    const searchValue = searchInput.value.toLowerCase();
+
+    const filteredTasks = tasks.filter(task => {
+        // Filter by status
+        if (filterValue === 'completed' && !task.completed) return false;
+        if (filterValue === 'pending' && task.completed) return false;
+        
+        // Filter by priority
+        if (priorityValue !== 'all' && task.priority !== priorityValue) return false;
+        
+        // Filter by category
+        if (categoryValue !== 'all') {
+            if (!task.categories || !task.categories.includes(categoryValue)) return false;
+        }
+        
+        // Filter by search
+        if (searchValue && !task.text.toLowerCase().includes(searchValue)) return false;
+        
+        return true;
+    });
 
   }
 });
