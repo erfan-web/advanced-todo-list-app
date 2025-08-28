@@ -14,7 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const pendingTasksEl = document.getElementById('pendingTasks');
   const closeModalBtn = document.getElementById('closeModalBtn');
   const cancelEditBtn = document.getElementById('cancelEditBtn');
-
+  const editTaskText = document.getElementById('editTaskText');
+  const editTaskPriority = document.getElementById('editTaskPriority');
+  const editTaskDueDate = document.getElementById('editTaskDueDate');
+  const editTaskCategory = document.getElementById('editTaskCategory');
+  const saveTaskBtn = document.getElementById('saveTaskBtn');
+  
 
   // State variables
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -36,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   themeToggle.addEventListener("click", toggleTheme);
 
   closeModalBtn.addEventListener('click', closeModal);
+  saveTaskBtn.addEventListener('click', saveTaskChanges);
   cancelEditBtn.addEventListener('click', closeModal);
 
   function init() {
@@ -187,6 +193,22 @@ document.addEventListener("DOMContentLoaded", () => {
       taskDetailsModal.style.display = 'none';
       currentEditId = null;
       currentCategories = [];
+  }
+  function saveTaskChanges() {
+    if (!currentEditId) return;
+    
+    const task = tasks.find(task => task.id === currentEditId);
+    if (!task) return;
+    
+    task.text = editTaskText.value.trim();
+    task.priority = editTaskPriority.value;
+    task.dueDate = editTaskDueDate.value || '';
+    task.categories = [...currentCategories];
+    
+    saveTasks();
+    renderTasks();
+    updateCategoryFilter();
+    closeModal();
   }
 
 
