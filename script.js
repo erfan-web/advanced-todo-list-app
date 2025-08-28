@@ -91,5 +91,16 @@ document.addEventListener("DOMContentLoaded", () => {
         return true;
     });
 
+    if (filteredTasks.length === 0) {
+      taskList.innerHTML = `
+          <div class="empty-state">
+              <i class="fas fa-tasks"></i>
+              <p>No tasks found</p>
+              <small>Try changing your filters or add a new task</small>
+          </div>
+      `;
+      return;
+    }
+
   }
 });
