@@ -108,6 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
       taskItem.className = 'task-item';
       taskItem.setAttribute('data-id', task.id);
       taskItem.setAttribute('draggable', 'true');
+
+      taskItem.innerHTML = `
+      <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+      <span class="task-text ${task.completed ? 'completed' : ''}">${task.text}</span>
+      `;
+
       taskList.appendChild(taskItem);
     });
 
