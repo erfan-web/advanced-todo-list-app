@@ -102,5 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    taskList.innerHTML = '';
+    filteredTasks.forEach((task, index) => {
+      const taskItem = document.createElement('li');
+      taskItem.className = 'task-item';
+      taskItem.setAttribute('data-id', task.id);
+      taskItem.setAttribute('draggable', 'true');
+      taskList.appendChild(taskItem);
+    });
+
   }
 });
