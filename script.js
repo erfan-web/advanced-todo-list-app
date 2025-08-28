@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const savedTheme = localStorage.getItem("theme") || "light";
     document.documentElement.setAttribute("data-theme", savedTheme);
     updateThemeIcon(savedTheme);
+    renderTasks()
   }
 
   function addTask() {
@@ -44,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tasks.unshift(newTask);
     taskInput.value = "";
     saveTask()
+    renderTasks()
   }
   function saveTask(){
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -57,5 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateThemeIcon(theme) {
     const icon = themeToggle.querySelector("i");
     icon.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+  }
+
+  function renderTasks() {
+
   }
 });
