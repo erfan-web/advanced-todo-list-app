@@ -55,11 +55,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tasks.unshift(newTask);
     taskInput.value = "";
-    saveTask()
+    saveTasks()
     renderTasks()
     updateStats();
   }
-  function saveTask(){
+  function saveTasks(){
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
   function toggleTheme() {
@@ -148,14 +148,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const task = tasks.find(task => task.id === id);
       if (task) {
           task.completed = !task.completed;
-          saveTask();
+          saveTasks();
           updateStats();
       }
   }
   function deleteTask(id) {
     if (confirm('Are you sure you want to delete this task?')) {
         tasks = tasks.filter(task => task.id !== id);
-        saveTask();
+        saveTasks();
         renderTasks();
         updateStats();
     }
