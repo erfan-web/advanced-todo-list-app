@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // State variables
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  let categories = JSON.parse(localStorage.getItem('categories')) || ['Work', 'Personal', 'Shopping'];
 
   // Initialize the app
   init();
@@ -37,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateThemeIcon(savedTheme);
     renderTasks()
     updateStats()
+    updateCategoryFilter()
   }
 
   function addTask() {
@@ -160,7 +162,14 @@ document.addEventListener("DOMContentLoaded", () => {
         updateStats();
     }
   }
-
+  function updateCategoryFilter() {
+    categoryFilter.innerHTML = `
+        <option value="all">All Categories</option>
+        ${categories.map(category => `
+            <option value="${category}">${category}</option>
+        `).join('')}
+    `;
+  }
   function formatDate(dateString) {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString("en-US", options);
