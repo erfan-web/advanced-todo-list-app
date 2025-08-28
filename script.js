@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalTasksEl = document.getElementById('totalTasks');
   const completedTasksEl = document.getElementById('completedTasks');
   const pendingTasksEl = document.getElementById('pendingTasks');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const cancelEditBtn = document.getElementById('cancelEditBtn');
 
 
   // State variables
@@ -32,6 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
   searchBtn.addEventListener('click', renderTasks);
 
   themeToggle.addEventListener("click", toggleTheme);
+
+  closeModalBtn.addEventListener('click', closeModal);
+  cancelEditBtn.addEventListener('click', closeModal);
 
   function init() {
     // Check for saved theme preference
@@ -177,6 +182,11 @@ document.addEventListener("DOMContentLoaded", () => {
     editTaskDueDate.value = task.dueDate || '';
         
     taskDetailsModal.style.display = 'flex';
+  }
+  function closeModal() {
+      taskDetailsModal.style.display = 'none';
+      currentEditId = null;
+      currentCategories = [];
   }
 
 
