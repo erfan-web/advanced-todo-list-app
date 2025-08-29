@@ -53,7 +53,6 @@ cd advanced-todo-list-app
 # Simply open index.html in your browser
 ```
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is inspired by a free source code example from [SourceCodester](https://www.sourcecodester.com). Used for practice purposes only.
 
 
