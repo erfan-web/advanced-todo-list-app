@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let categories = JSON.parse(localStorage.getItem('categories')) || ['Work', 'Personal', 'Shopping'];
   let currentEditId = null;
   let currentCategories = [];
+  let = dragStartIndex = null;
 
   // Initialize the app
   init();
@@ -46,6 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
   saveTaskBtn.addEventListener('click', saveTaskChanges);
   cancelEditBtn.addEventListener('click', closeModal);
   addCategoryBtn.addEventListener('click', addCategory);
+
+  initDragAndDrop()
 
 
   function init() {
@@ -175,6 +178,13 @@ document.addEventListener("DOMContentLoaded", () => {
       deleteBtn.addEventListener('click', () => deleteTask(task.id));
       editBtn.addEventListener('click', () => openEditModal(task.id));
 
+      // Drag events
+      taskItem.addEventListener('dragstart', dragStart);
+      taskItem.addEventListener('dragover', dragOver);
+      taskItem.addEventListener('drop', drop);
+      taskItem.addEventListener('dragend', dragEnd);
+
+
     });
 
   }
@@ -293,5 +303,50 @@ document.addEventListener("DOMContentLoaded", () => {
     completedTasksEl.textContent = tasks.filter(task => task.completed).length;
     pendingTasksEl.textContent = tasks.filter(task => !task.completed).length;
   }
+  function initDragAndDrop() {
+    const listItems = document.querySelectorAll('.task-item');
 
+    listItems.forEach(item => {
+      item.addEventListener('dragstart', dragStart);
+      item.addEventListener('dragover', dragOver);
+      item.addEventListener('drop', drop);
+      item.addEventListener('dragend', dragEnd);
+
+
+
+    });
+  }
+  function dragStart(e) {
+    dragStartIndex = +this.closest('li').getAttribute('data-id');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+    console.log(e.dataTransfer)
+    this.classList.add('dragging');
+  }
+  function dragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  }
+  function drop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const dragEndIndex = +this.getAttribute('data-id');
+    if (dragStartIndex === dragEndIndex) return;
+
+    // Reorder tasks array
+    const startIdx = tasks.findIndex(task => task.id === dragStartIndex);
+    const endIdx = tasks.findIndex(task => task.id === dragEndIndex);
+
+    if (startIdx === -1 || endIdx === -1) return;
+
+    const [removed] = tasks.splice(startIdx, 1); // تسک کشیده شده رو حذف می‌کنه
+    tasks.splice(endIdx, 0, removed);            // دوباره توی جای جدید وارد می‌کنه
+
+    saveTasks();   // ذخیره توی localStorage
+    renderTasks(); // دوباره کشیدن UI
+  }
+  function dragEnd() {
+    this.classList.remove('dragging');
+  }
 });
