@@ -35,11 +35,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event Listeners
   addTaskBtn.addEventListener("click", addTask);
+  taskInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') addTask();
+  });
 
   filterSelect.addEventListener('change', renderTasks);
   priorityFilter.addEventListener('change', renderTasks);
   categoryFilter.addEventListener('change', renderTasks);
   searchBtn.addEventListener('click', renderTasks);
+  searchInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') renderTasks();
+      });
 
   themeToggle.addEventListener("click", toggleTheme);
 
@@ -47,6 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
   saveTaskBtn.addEventListener('click', saveTaskChanges);
   cancelEditBtn.addEventListener('click', closeModal);
   addCategoryBtn.addEventListener('click', addCategory);
+  editTaskCategory.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') addCategory();
+    });
+
 
   initDragAndDrop()
 
