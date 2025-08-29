@@ -268,8 +268,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   function removeCategory(category) {
     currentCategories = currentCategories.filter(cat => cat !== category);
-    categories.pop(category)
-    localStorage.setItem("categories",categories)
+    categories.splice(categories.indexOf(category) , 1)
+    localStorage.setItem("categories", JSON.stringify(categories))
     renderCategoryTags();
   }
 
