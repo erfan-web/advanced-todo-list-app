@@ -31,6 +31,16 @@ All data is stored locally using the browser's LocalStorage.
 
 ---
 
+## Live Demo
+[Live Demo](https://erfan-web.github.io/advanced-todo-list-app/)
+
+---
+
+## Preview
+![App Screenshot](screenshot.png)  
+
+---
+
 ## Installation & Run
 ```bash
 # Clone the repository
@@ -45,8 +55,5 @@ cd advanced-todo-list-app
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
-
-
-## Preview
 
 
